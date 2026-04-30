@@ -1505,7 +1505,7 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 // Demo form
-document.getElementById('demo-form').addEventListener('submit', function(e) {
+document.getElementById('demo-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const name  = document.getElementById('demo-name').value.trim();
   const email = document.getElementById('demo-email').value.trim();
@@ -1527,13 +1527,30 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
     return;
   }
 
-  // Show success state
-  document.getElementById('demo-success-email').textContent = email;
-  document.getElementById('demo-form').style.display = 'none';
-  document.getElementById('demo-success').style.display = 'block';
+  const btn = this.querySelector('button[type=submit]');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
 
-  // In production: POST to your backend / CRM / Zapier webhook here
-  // fetch('/api/demo-request', { method:'POST', body: JSON.stringify({name,email,size}) })
+  try {
+    const res = await fetch('https://formspree.io/f/mlgzeede', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(this)
+    });
+    if (res.ok) {
+      document.getElementById('demo-success-email').textContent = email;
+      document.getElementById('demo-form').style.display = 'none';
+      document.getElementById('demo-success').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Book a free demo';
+      alert('Something went wrong. Please try again.');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Book a free demo';
+    alert('Network error. Please try again.');
+  }
 });
 </script>
 </body>
