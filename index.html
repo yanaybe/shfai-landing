@@ -70,6 +70,12 @@ img { display: block; max-width: 100%; }
 .card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
 .card:hover { box-shadow: var(--shadow-md); }
 
+/* Desktop feature spans — kept explicit so mobile overrides are clean */
+@media (min-width: 481px) {
+  .feature-card-large { grid-column: span 2; }
+  .feature-alerts { grid-column: span 2; }
+}
+
 /* ─── BADGE ─── */
 .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; padding: 3px 8px; border-radius: 5px; border: 1px solid transparent; }
 .badge-high { background: var(--danger-bg); color: var(--danger); border-color: hsla(0,84%,60%,.2); }
@@ -502,10 +508,12 @@ img { display: block; max-width: 100%; }
   .solution-headline { font-size: 24px; }
   .solution-sub { font-size: 15px; }
 
-  /* Features — collapse inline grids */
-  .feature-card { padding: 24px 20px; }
+  /* Features — stack cards with clear spacing, collapse inner grids */
+  .features-grid { gap: 20px; }
+  .feature-card { padding: 24px 20px; margin-bottom: 0; }
   .feature-title { font-size: 17px; }
   .feature-desc { font-size: 14px; }
+  .feature-card-large { grid-column: span 1 !important; }
   .feature-alerts { grid-column: span 1 !important; }
   .feature-inner { grid-template-columns: 1fr !important; gap: 24px !important; }
 
